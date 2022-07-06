@@ -21,10 +21,10 @@
   </include>
 
   <node name="rviz" pkg="rviz" type="rviz" respawn="false" output="screen" args="-d $(find object_detection)/rviz/object_detection.rviz">
-    <rosparam command="load" file="/home/mads/Downloads/smb_2022-06-03-15-19-59.yaml" />
+    <rosparam command="load" file="/home/liuzhi/det/artefact_detection_test.yaml" />
   </node>
 
-  <node pkg="rosbag" type="play" name="player" output="screen" args="-d 3 --clock $(arg rosbag_path)" required = "false"/>
+  <node pkg="rosbag" type="play" name="player" output="screen" args="-d 3 -s 160 --clock $(arg rosbag_name)" required = "false"/>
 </launch>
 
 <!-- HAve it run locally on Jetson -->

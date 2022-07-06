@@ -28,7 +28,7 @@
         doc="Topic containing the point cloud from the lidar."/>
 
   <arg  name="object_detection_classes" 
-        default="[0,1,11,25,13,74]"
+        default="[1,11,25, 39, 45, 41]"
         doc=  "List of the ids of classes for detection. Based on the COCO dataset, refer here: https://github.com/ethz-asl/darknet_catkin/blob/master/data/coco.names. bNOTICE, class ids start at 0."/>
 
   <!-- evaluate where to run object detection node (based on argument gpu) -->
@@ -70,7 +70,7 @@
 
     <!--Object detection related-->
     <param name="model" value='yolov5l6'/>
-    <param name="model_path" value='/usr/share/yolo/models'/>
+    <param name="model_path" value='/home/liuzhi/det/model_weights'/>
     <!-- <param name="model_path" value=''/> -->
     <param name="device" value='$(arg object_detection_device)'/>
     <!-- <param name="device" value='cpu'/> -->
