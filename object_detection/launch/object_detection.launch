@@ -7,6 +7,10 @@
         default="$(optenv SMB_NAME smb261)"
         doc="Name of the SMB in the format smb26x (relevant for calibrations)"/>
 
+  <arg  name="det_save_path" 
+        default="/home/liuzhi/det_result"
+        doc="folder to save the detection result"/>
+
   <arg  name="gpu" 
         default="remote"
         doc="Run on GPU? Options: 'local', 'remote' (default), 'off'"/>
@@ -28,7 +32,7 @@
         doc="Topic containing the point cloud from the lidar."/>
 
   <arg  name="object_detection_classes" 
-        default="[1,11,25, 39, 45, 41]"
+        default="[28, 26, 25, 39, 11, 56, 75]"
         doc=  "List of the ids of classes for detection. Based on the COCO dataset, refer here: https://github.com/ethz-asl/darknet_catkin/blob/master/data/coco.names. bNOTICE, class ids start at 0."/>
 
   <!-- evaluate where to run object detection node (based on argument gpu) -->
@@ -57,10 +61,12 @@
     <param name="camera_topic" value='$(arg input_camera_name)/image_color'/>
     <param name="camera_info_topic" value='$(arg input_camera_name)/camera_info'/>
     <param name="lidar_topic" value='$(arg lidar_topic)'/>
+    <param name="det_save_path" value='$(arg det_save_path)'/>
 
     <!--Output related-->
     <rosparam file="$(find object_detection)/cfg/output_params.yaml" />
-    
+
+
     <!--Camera Lidar synchronization related-->
     <param name="camera_lidar_sync_queue_size" value="10"/>
     <param name="camera_lidar_sync_slop" value="0.1"/>

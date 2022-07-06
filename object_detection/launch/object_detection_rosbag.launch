@@ -24,7 +24,7 @@
     <rosparam command="load" file="/home/liuzhi/det/artefact_detection_test.yaml" />
   </node>
 
-  <node pkg="rosbag" type="play" name="player" output="screen" args="-d 3 -s 160 --clock $(arg rosbag_name)" required = "false"/>
+  <node pkg="rosbag" type="play" name="player" output="screen" args="-d 3 -s 100 --clock $(arg rosbag_name)" required = "false"/>
 </launch>
 
 <!-- HAve it run locally on Jetson -->

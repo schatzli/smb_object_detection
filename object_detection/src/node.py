@@ -10,6 +10,7 @@ from os.path import join
 from numpy.lib.recfunctions import unstructured_to_structured
 
 import message_filters as mf
+import os
 import sklearn
 import cv2
 from cv_bridge import CvBridge
@@ -39,8 +40,10 @@ class Node:
         rospy.loginfo("[ObjectDetection Node] Object Detector initilization starts ...")
         self.rospack = rospkg.RosPack()
 
-        self.det_result = {"class_id":[], "conf_score":[], "ori_pose":[], "map_pose":[]}
-        self.det_save_path = "/home/liuzhi/det.npz" ## hardcoded
+        self.det_result = {"class_id":[], "conf_score":[], "ori_pose":[], "map_pose":[], "image_patch":[]}
+        self.det_num = 0
+
+        self.det_save_path                  = rospy.get_param('~det_save_path', "/home/liuzhi/det_result") ## hardcoded
 
         # Initilized the node 
         rospy.init_node("objectify", anonymous=True)
@@ -153,7 +156,7 @@ class Node:
             rospy.logerr(" ------------------ camera_info not valid ------------------------")
 
     def save_det_result(self):
-        np.savez(self.det_save_path, **self.det_result)
+        np.savez(os.path.join(self.det_save_path,"det.npz"), **self.det_result)
 
     def run(self):
 
@@ -282,10 +285,19 @@ class Node:
 
                         ### update the detection results for offline processing
 
+                        image_patch = cv_image[int(object_detection_result['ymin'][i]):int(object_detection_result['ymax'][i]), int(object_detection_result['xmin'][i]):int(object_detection_result['xmax'][i])]
+
                         self.det_result["class_id"].append(object_detection_result["name"][i])
                         self.det_result["conf_score"].append(object_detection_result["confidence"][i])
                         self.det_result["ori_pose"].append(obj_pos)
                         self.det_result["map_pose"].append(obj_pos_transformed)
+                        self.det_result["image_patch"].append(image_patch)
+
+                        class_name = object_detection_result["name"][i]
+
+                        cv2.imwrite(os.path.join(self.det_save_path, f"{self.det_num}_{class_name}.png"), image_patch)
+                        self.det_num += 1
+
 
 
                         if (not self.project_all_points_to_img) and self.project_object_points_to_img:
